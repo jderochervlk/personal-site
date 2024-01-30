@@ -1,19 +1,53 @@
-import { createRequestHandler } from "@remix-run/express";
-import { broadcastDevReady } from "@remix-run/node";
-import express from "express";
+import { getAssetFromKV } from "@cloudflare/kv-asset-handler";
+import { createRequestHandler, logDevReady } from "@remix-run/cloudflare";
+import * as build from "@remix-run/dev/server-build";
+// eslint-disable-next-line import/no-unresolved
+import __STATIC_CONTENT_MANIFEST from "__STATIC_CONTENT_MANIFEST";
 
-// notice that the result of `remix build` is "just a module"
-import * as build from "./build/index.js";
+const MANIFEST = JSON.parse(__STATIC_CONTENT_MANIFEST);
+const handleRemixRequest = createRequestHandler(build, process.env.NODE_ENV);
 
-const app = express();
-app.use(express.static("public"));
+if (process.env.NODE_ENV === "development") {
+    logDevReady(build);
+}
 
-// and your app is "just a request handler"
-app.all("*", createRequestHandler({ build }));
+export default {
+    async fetch(
+        request,
+        env,
+        ctx
+    ) {
+        try {
+            const url = new URL(request.url);
+            const ttl = url.pathname.startsWith("/build/")
+                ? 60 * 60 * 24 * 365 // 1 year
+                : 60 * 5; // 5 minutes
+            return await getAssetFromKV(
+                {
+                    request,
+                    waitUntil: ctx.waitUntil.bind(ctx),
+                },
+                {
+                    ASSET_NAMESPACE: env.__STATIC_CONTENT,
+                    ASSET_MANIFEST: MANIFEST,
+                    cacheControl: {
+                        browserTTL: ttl,
+                        edgeTTL: ttl,
+                    },
+                }
+            );
+        } catch (error) {
+            // No-op
+        }
 
-app.listen(3000, () => {
-    if (process.env.NODE_ENV === "development") {
-        broadcastDevReady(build);
-    }
-    console.log("App listening on http://localhost:3000");
-});
+        try {
+            const loadContext = {
+                env,
+            };
+            return await handleRemixRequest(request, loadContext);
+        } catch (error) {
+            console.log(error);
+            return new Response("An unexpected error occurred", { status: 500 });
+        }
+    },
+};
