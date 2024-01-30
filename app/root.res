@@ -6,11 +6,11 @@ let links: Remix.Links.t = () => [Remix.Links.Href({rel: "stylesheet", href: sty
 let meta: Remix.Meta.t = () => [
   Remix.Meta.Content({name: "viewport", content: "width=device-width, initial-scale=1"}),
   Remix.Meta.Title({title: "The Josh Derocher"}),
-  //   {
-  //     name: "description",
-  //     content: "Blog and all about Josh Derocher.",
-  //   },
-  //   {charset: "UTF-8"},
+  Remix.Meta.Content({
+    name: "description",
+    content: "Blog and all about Josh Derocher.",
+  }),
+  Remix.Meta.Charset({charset: "UTF-8"}),
 ]
 
 @react.component
