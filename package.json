@@ -4,16 +4,21 @@
     "build": "remix build",
     "deploy": "wrangler deploy",
     "dev": "remix dev --manual -c \"npm start\"",
-    "start": "wrangler dev ./build/index.js"
+    "start": "wrangler dev ./build/index.js",
+    "res:build": "rescript",
+    "res:dev": "rescript -w"
   },
   "dependencies": {
     "@cloudflare/kv-asset-handler": "^0.1.3",
     "@remix-run/cloudflare": "*",
     "@remix-run/css-bundle": "*",
     "@remix-run/react": "*",
+    "@rescript/core": "^0.6.0",
+    "@rescript/react": "^0.12.0",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "rescript": "^11.0.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",

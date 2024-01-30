@@ -1,5 +1,6 @@
 import {
   Links,
+  LiveReload,
   Meta,
   Outlet,
   Scripts,
@@ -7,21 +8,8 @@ import {
   useLoaderData
 } from "@remix-run/react";
 
-export const loader = async () => {
-  return json({ data: await fetch("https://baconipsum.com/api/?type=meat-and-filler").then(res => res.json())})
-}
-
-export const headers = ({
-  actionHeaders,
-  errorHeaders,
-  loaderHeaders,
-  parentHeaders,
-}) => ({
-  "Cache-Control": "max-age=300, s-maxage=3600",
-});
 
 export default function App() {
-  const {data} = useLoaderData()
 
   return (
     <html>
@@ -35,11 +23,9 @@ export default function App() {
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css" />
       </head>
       <body className="container">
-        <h1>Hello world!</h1>
-        {data.map(t => <p key={t}>{t}</p>)}
         <Outlet />
-
         <Scripts />
+        <LiveReload/>
       </body>
     </html>
   );

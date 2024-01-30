@@ -135,3 +135,7 @@ public
 
 # wrangler
 .wrangler
+
+# rescript
+lib
+.bsb.lock
