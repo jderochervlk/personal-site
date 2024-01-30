@@ -1,12 +1,14 @@
 {
   "type": "module",
   "scripts": {
-    "build": "remix build",
-    "deploy": "wrangler deploy",
     "dev": "remix dev --manual -c \"npm start\"",
     "start": "wrangler dev ./build/index.js",
+    "build": "remix build",
+    "deploy": "wrangler deploy",
     "res:build": "rescript",
-    "res:dev": "rescript -w"
+    "res:dev": "rescript -w",
+    "format": "npx @biomejs/biome format . --write",
+    "prepare": "husky"
   },
   "dependencies": {
     "@cloudflare/kv-asset-handler": "^0.1.3",
@@ -21,8 +23,10 @@
     "rescript": "^11.0.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.5.3",
     "@cloudflare/workers-types": "^4.20230518.0",
     "@remix-run/dev": "*",
+    "husky": "^9.0.7",
     "wrangler": "3.8.0"
   }
 }
