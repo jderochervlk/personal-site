@@ -4,7 +4,14 @@
 		"enabled": true
 	},
 	"linter": {
-		"enabled": false
+		"enabled": false,
+		"ignore": [
+			"build",
+			"lib",
+			".cache",
+			".wrangler",
+			"public"
+		]
 	},
 	"formatter": {
 		"enabled": true
