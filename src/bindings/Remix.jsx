@@ -11,11 +11,22 @@ var Meta = {};
 
 var Outlet = {};
 
+var $$Headers = {};
+
+var Loader = {};
+
+function MakeLoader(Data) {
+  return {};
+}
+
 export {
   Scripts ,
   Links ,
   LiveReload ,
   Meta ,
   Outlet ,
+  $$Headers ,
+  Loader ,
+  MakeLoader ,
 }
 /* No side effect */
