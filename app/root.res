@@ -1,4 +1,4 @@
-@module("../src/pico.css")
+@module("./pico.css")
 external styles: string = "default"
 
 let links: Remix.Links.t = () => [Remix.Links.Href({rel: "stylesheet", href: styles})]
