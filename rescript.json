@@ -23,10 +23,7 @@
 		"rescript-webapi",
 		"@glennsl/rescript-json-combinators"
 	],
-	"bsc-flags": [
-		"-open RescriptCore",
-		"-open JsonCombinators"
-	],
+	"bsc-flags": ["-open RescriptCore", "-open JsonCombinators"],
 	"ppx-flags": [],
 	"jsx": {
 		"version": 4
