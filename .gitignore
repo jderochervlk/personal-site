@@ -139,3 +139,5 @@ public
 # rescript
 lib
 .bsb.lock
+app/**/*.jsx
+src/**/*.jsx
