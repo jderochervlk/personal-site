@@ -21,12 +21,13 @@
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "rescript": "^11.0.1",
+    "rescript": "^11.1.0-rc.1",
     "rescript-webapi": "^0.9.1"
   },
   "devDependencies": {
     "@biomejs/biome": "1.5.3",
     "@cloudflare/workers-types": "^4.20230518.0",
+    "@edgedb/generate": "^0.4.1",
     "@remix-run/dev": "*",
     "husky": "^9.0.7",
     "wrangler": "3.8.0"
