@@ -37,17 +37,15 @@ module Outlet = {
 module Headers = {
   type actionHeaders
   type errorHeaders
-  type loaderHeaders
+  type loaderHeaders<'a> = {..} as 'a
   type parentHeaders
 
-  type headers = {"Cache-Control": string}
+  //  {...loaderHeaders, "Cache-Control": string}
+  type headers<'a> = {..} as 'a
 
-  type t = (
-    ~_actionHeaders: actionHeaders,
-    ~_errorHeaders: errorHeaders,
-    ~_loaderHeaders: loaderHeaders,
-    ~_parentHeaders: parentHeaders,
-  ) => headers
+  type headersArgs<'a> = {actionHeaders?: actionHeaders, loaderHeaders?: loaderHeaders<'a>}
+
+  type t<'a> = headersArgs<'a> => option<headers<'a>>
 }
 
 module Loader = {
@@ -64,10 +62,11 @@ module type LoaderData = {
 module MakeLoader = (Data: LoaderData) => {
   type t = Loader.t<Data.t>
 
-  type headers = {"Server-Timing": string}
-  type jsonOptions = {headers: headers}
+  type headers<'a> = Headers.loaderHeaders<'a>
+  type jsonOptions<'a> = {headers: headers<'a>}
 
-  @module("@remix-run/react") external json: (Data.t, ~jsonOptions: jsonOptions=?) => 'b = "json"
+  @module("@remix-run/react")
+  external json: (Data.t, ~jsonOptions: jsonOptions<'a>=?) => 'b = "json"
 
   @module("@remix-run/react")
   external useLoaderData: unit => Data.t = "useLoaderData"
