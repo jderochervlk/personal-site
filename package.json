@@ -30,7 +30,10 @@
     "@cloudflare/workers-types": "^4.20230518.0",
     "@edgedb/generate": "^0.4.1",
     "@remix-run/dev": "*",
+    "cssnano": "^6.0.3",
     "husky": "^9.0.7",
+    "postcss": "^8.4.33",
+    "postcss-variable-compress": "^3.0.0",
     "wrangler": "3.8.0"
   }
 }
