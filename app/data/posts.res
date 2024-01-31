@@ -12,6 +12,7 @@ type t = array<post>
 let post = object(field => {
   title: field.required("title", string),
   id: field.required("id", string),
+  content: field.required("content", string),
 })
 
 let posts = array(post)
