@@ -32,7 +32,7 @@ export default {
 				},
 			)
 		} catch (error) {
-			console.error(error)
+			// no op
 		}
 
 		try {
@@ -46,5 +46,3 @@ export default {
 		}
 	},
 }
-
-const DEBUG = false
