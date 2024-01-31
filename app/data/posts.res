@@ -28,7 +28,7 @@ let decode = object(field =>
   }
 )
 
-let postQuery = %raw("Fauna.fql`blog.all()`")
+let postQuery = fql`blog.all()`
 
 let query = async secret => {
   let client = client({secret: secret})
