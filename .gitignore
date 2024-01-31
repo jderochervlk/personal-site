@@ -135,6 +135,7 @@ public
 
 # wrangler
 .wrangler
+.dev.vars
 
 # rescript
 lib

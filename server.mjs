@@ -46,3 +46,5 @@ export default {
 		}
 	},
 }
+
+const DEBUG = false

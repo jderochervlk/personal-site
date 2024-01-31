@@ -51,7 +51,10 @@ module Headers = {
 }
 
 module Loader = {
-  type t<'a> = unit => promise<'a>
+  type env = {"FAUNA_SECRET": string}
+  type context = {env: env}
+  type loaderArgs = {context: context}
+  type t<'a> = loaderArgs => promise<'a>
 }
 
 module type LoaderData = {

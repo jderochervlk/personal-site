@@ -10,42 +10,59 @@ let headers: Remix.Headers.t = (
     "Cache-Control": "max-age=300, s-maxage=3600",
   }
 
-@spice
-type bacon = array<string>
-
 module Data = {
   open Json.Decode
-  type t = {"foo": string, "data": array<string>}
+  type post = {title: string, id: string}
 
-  let decode = array(string)
+  type t = {posts: array<post>}
+
+  type data = {data: t}
+
+  let post = object(field => {
+    title: field.required("title", string),
+    id: field.required("id", string),
+  })
+
+  let posts = array(post)
+
+  let response = object(field =>
+    {
+      "data": field.required("data", posts),
+    }
+  )
+
+  let decode = object(field =>
+    {
+      "data": field.required("data", response),
+    }
+  )
 }
 
 module Loader = Remix.MakeLoader(Data)
 
-let loader: Loader.t = async () => {
-  let bacon = switch await Fetch.fetch("https://baconipsum.com/api/?type=meat-and-filler")
-  ->Promise.then(Fetch.Response.json)
-  ->Promise.thenResolve(t => t->Json.decode(Data.decode)) {
-  | Ok(data) => data
-  | Error(e) => {
-      Console.error(e)
+let loader: Loader.t = async ({context}) => {
+  let secret = context.env["FAUNA_SECRET"]
+  open Fauna
+  let client = client({secret: secret})
+  let postQuery = %raw("Fauna.fql`blog.all()`")
+  let posts = await client.query(postQuery)
+  let data = switch posts->Json.decode(Data.decode) {
+  | Ok(res) => res["data"]["data"]
+  | Error(err) => {
+      let _ = Console.error(err)
       []
     }
   }
-  let data = {
-    "foo": "bar",
-    "data": bacon,
-  }
 
-  Loader.json(data)
+  Loader.json({posts: data})
 }
 
 @react.component
 let make = () => {
-  let data = Loader.useLoaderData()
+  let {posts} = Loader.useLoaderData()
   <>
     <Home_hero />
-    {data["data"]->Array.map(v => <p key=v> {v->React.string} </p>)->React.array}
+    {posts->Array.map(post => <h2 key=post.id> {post.title->React.string} </h2>)->React.array}
   </>
 }
 
