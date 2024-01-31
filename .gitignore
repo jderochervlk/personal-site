@@ -141,7 +141,3 @@ lib
 .bsb.lock
 app/**/*.jsx
 src/**/*.jsx
-
-# edgedb
-dsn.txt
-fly.toml
