@@ -1,5 +1,3 @@
-open Webapi
-
 let headers: Remix.Headers.t = (
   ~_actionHeaders,
   ~_errorHeaders,
@@ -11,48 +9,14 @@ let headers: Remix.Headers.t = (
   }
 
 module Data = {
-  open Json.Decode
-  type post = {title: string, id: string}
-
-  type t = {posts: array<post>}
-
-  type data = {data: t}
-
-  let post = object(field => {
-    title: field.required("title", string),
-    id: field.required("id", string),
-  })
-
-  let posts = array(post)
-
-  let response = object(field =>
-    {
-      "data": field.required("data", posts),
-    }
-  )
-
-  let decode = object(field =>
-    {
-      "data": field.required("data", response),
-    }
-  )
+  type t = {posts: Posts.t}
 }
 
 module Loader = Remix.MakeLoader(Data)
 
 let loader: Loader.t = async ({context}) => {
   let secret = context.env["FAUNA_SECRET"]
-  open Fauna
-  let client = client({secret: secret})
-  let postQuery = %raw("Fauna.fql`blog.all()`")
-  let posts = await client.query(postQuery)
-  let data = switch posts->Json.decode(Data.decode) {
-  | Ok(res) => res["data"]["data"]
-  | Error(err) => {
-      let _ = Console.error(err)
-      []
-    }
-  }
+  let data = await Posts.query(secret)
 
   Loader.json({posts: data})
 }

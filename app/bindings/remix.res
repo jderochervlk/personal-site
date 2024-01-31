@@ -64,7 +64,10 @@ module type LoaderData = {
 module MakeLoader = (Data: LoaderData) => {
   type t = Loader.t<Data.t>
 
-  @module("@remix-run/react") external json: Data.t => 'b = "json"
+  type headers = {"Server-Timing": string}
+  type jsonOptions = {headers: headers}
+
+  @module("@remix-run/react") external json: (Data.t, ~jsonOptions: jsonOptions=?) => 'b = "json"
 
   @module("@remix-run/react")
   external useLoaderData: unit => Data.t = "useLoaderData"
