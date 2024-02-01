@@ -1,14 +1,9 @@
 module Syntax = {
   @react.component
   let make = (~className: option<string>, ~children: React.element) => {
-    let _ = Console.log(className)
     let language =
       className
-      ->Option.map(cn => {
-        let t = cn->String.split("-")
-        let _ = Console.log(t)
-        t
-      })
+      ->Option.map(cn => cn->String.split("-"))
       ->Option.flatMap(cn => cn[1])
       ->Option.getOr("javascript")
     <Highlight style=Highlight.style language> {children} </Highlight>
