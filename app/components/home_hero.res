@@ -1,8 +1,8 @@
 @react.component
 let make = () => {
   <header style={{textAlign: "center"}}>
-    <h1> {"The Josh Derocher"->React.string} </h1>
-    <h2> {"Web developer. ReScript. Really Hoopy Frood."->React.string} </h2>
+    <h1> {"Josh Derocher-Vlk"->React.string} </h1>
+    <h2> {"Web developer, React, ReScript, and Really Hoopy Frood."->React.string} </h2>
     <nav>
       <ul
         style={{
