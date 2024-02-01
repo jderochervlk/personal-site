@@ -1600,7 +1600,7 @@ pre,
 code,
 kbd,
 samp {
-  font-size: 0.875em;
+  font-size: 1em;
   font-family: var(--font-family);
 }
 
