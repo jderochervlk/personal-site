@@ -30,14 +30,22 @@ let loader: Loader.t = async ({context}) => {
 @react.component
 let make = () => {
   let {posts} = Loader.useLoaderData()
-  let _ = Console.log(Js.Json.stringifyAny(posts))
   <>
     <Home_hero />
     {posts
     ->Array.map(post =>
-      <article>
-        <h2 key=post.id> {post.title->React.string} </h2>
-        <Markdown> post.content </Markdown>
+      <article key=post.id>
+        <h2> {post.title->React.string} </h2>
+        <Markdown
+          options={{
+            overrides: {
+              code: props => {
+                <Markdown.Syntax {...props} />
+              },
+            },
+          }}>
+          post.content
+        </Markdown>
       </article>
     )
     ->React.array}

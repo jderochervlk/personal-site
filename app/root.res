@@ -13,6 +13,10 @@ let meta: Remix.Meta.t = () => [
   Remix.Meta.Charset({charset: "UTF-8"}),
 ]
 
+Highlight.light->Highlight.registerLanguage("typescript", Highlight.typescript)
+Highlight.light->Highlight.registerLanguage("rust", Highlight.rust)
+Highlight.light->Highlight.registerLanguage("ocaml", Highlight.ocaml)
+
 @react.component
 let make = () => {
   <html lang="en">
