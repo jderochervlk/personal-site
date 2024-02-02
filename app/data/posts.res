@@ -3,21 +3,13 @@
  */
 
 open Json.Decode
-open Fauna
-open Post
 type post = Post.t
 
 type t = array<post>
 
-let post = object(field => {
-  title: field.required("title", string),
-  id: field.required("id", string),
-  content: field.required("content", string),
-})
+let posts = array(Post.decode_post)
 
-let posts = array(post)
-
-let response = object(field =>
+let decode_response = object(field =>
   {
     "data": field.required("data", posts),
   }
@@ -25,16 +17,14 @@ let response = object(field =>
 
 let decode = object(field =>
   {
-    "data": field.required("data", response),
+    "data": field.required("data", decode_response),
   }
 )
 
-let postQuery = fql`blog.all()`
-
 let query = async secret => {
+  open Fauna
   let client = client({secret: secret})
-  let postQuery = postQuery
-  let posts = await client.query(postQuery)
+  let posts = await (fql`blog.all()`)->client.query
   switch posts->Json.decode(decode) {
   | Ok(res) => res["data"]["data"]
   | Error(err) => {

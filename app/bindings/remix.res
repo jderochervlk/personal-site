@@ -51,16 +51,18 @@ module Headers = {
 module Loader = {
   type env = {"FAUNA_SECRET": string}
   type context = {env: env}
-  type loaderArgs = {context: context}
-  type t<'a> = loaderArgs => promise<'a>
+  type request = Webapi.Fetch.Request.t
+  type loaderArgs<'p> = {context: context, request: request, params: 'p}
+  type t<'a, 'p> = loaderArgs<'p> => promise<'a>
 }
 
 module type LoaderData = {
   type t
+  type params
 }
 
 module MakeLoader = (Data: LoaderData) => {
-  type t = Loader.t<Data.t>
+  type t = Loader.t<Data.t, Data.params>
 
   type headers<'a> = Headers.loaderHeaders<'a>
   type jsonOptions<'a> = {headers: headers<'a>}
@@ -71,3 +73,6 @@ module MakeLoader = (Data: LoaderData) => {
   @module("@remix-run/react")
   external useLoaderData: unit => Data.t = "useLoaderData"
 }
+
+@module("@remix-run/react")
+external redirect: string => exn = "redirect"
