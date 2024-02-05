@@ -34,24 +34,7 @@ let make = () => {
   <>
     <Home_hero />
     {posts
-    ->Array.map(post =>
-      <article key=post.id>
-        <h2> {post.title->React.string} </h2>
-        <p>
-          <strong> {post.date->React.string} </strong>
-        </p>
-        <Markdown
-          options={{
-            overrides: {
-              code: props => {
-                <Markdown.Syntax {...props} />
-              },
-            },
-          }}>
-          post.content
-        </Markdown>
-      </article>
-    )
+    ->Array.map(post => <Blog_post post />)
     ->React.array}
   </>
 }
