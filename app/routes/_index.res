@@ -34,7 +34,7 @@ let make = () => {
   <>
     <Home_hero />
     {posts
-    ->Array.map(post => <Blog_post post />)
+    ->Array.map(post => <Blog_post post chop=true />)
     ->React.array}
   </>
 }
