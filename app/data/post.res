@@ -29,7 +29,7 @@ let create = async secret => {
     "title": "",
     "content": "",
     "published": false,
-    "date": 0,
+    "date": "",
   })`
   )->client.query
 
@@ -48,4 +48,20 @@ let query = async (id, secret) => {
   | Ok(res) => Ok(res["data"])
   | Error(err) => Error(err)
   }
+}
+
+type postId = string
+
+let update = async (_content: {..} as 'a, id: postId, secret) => {
+  open Fauna
+  let client = client({secret: secret})
+  let content: string = %raw("_content")
+  await (
+    fql`blog.byId(${id})!.update(${content}) { 
+    title,
+    content,
+    published,
+    date
+   }`
+  )->client.query
 }

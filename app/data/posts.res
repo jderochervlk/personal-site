@@ -9,27 +9,27 @@ type t = array<post>
 
 let posts = array(Post.decode_post)
 
-let decode_response = object(field =>
-  {
-    "data": field.required("data", posts),
-  }
-)
-
-let decode = object(field =>
-  {
-    "data": field.required("data", decode_response),
-  }
-)
-
 let query = async secret => {
   open Fauna
   let client = client({secret: secret})
   let posts = await (fql`blog.all()`)->client.query
-  switch posts->Json.decode(decode) {
-  | Ok(res) => res["data"]["data"]
-  | Error(err) => {
-      let _ = Console.error(err)
-      []
-    }
+  switch posts
+  ->JSON.Decode.object
+  ->Option.flatMap(t => t->Dict.get("data"))
+  ->Option.flatMap(JSON.Decode.object)
+  ->Option.flatMap(t => t->Dict.get("data"))
+  ->Option.flatMap(JSON.Decode.array) {
+  | Some(posts) =>
+    posts->Array.reduce([], (acc, item) =>
+      switch item->Json.decode(Post.decode_post) {
+      | Ok(item) => acc->Array.concat([item])
+      | Error(err) => {
+          Console.error(err)
+          Console.log(item->JSON.stringifyAny)
+          acc
+        }
+      }
+    )
+  | None => Exn.raiseError("Posts query returned an invalid response.")
   }
 }

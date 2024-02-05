@@ -4,7 +4,7 @@ let headers: Remix.Headers.t<{..}> = params =>
   | _ => None
   }
 
-type loader = {context: Remix.Loader.context}
+type loader = {context: Remix.context}
 let loader = async ({context}) => {
   let secret = context.env["FAUNA_SECRET"]
   let newPost = await Post.create(secret)

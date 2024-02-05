@@ -34,6 +34,9 @@ module Outlet = {
   external make: unit => React.element = "Outlet"
 }
 
+type env = {"FAUNA_SECRET": string}
+type context = {env: env}
+
 module Headers = {
   type actionHeaders
   type errorHeaders
@@ -49,9 +52,8 @@ module Headers = {
 }
 
 module Loader = {
-  type env = {"FAUNA_SECRET": string}
-  type context = {env: env}
-  type request = Webapi.Fetch.Request.t
+  open Webapi
+  type request = Fetch.Request.t
   type loaderArgs<'p> = {context: context, request: request, params: 'p}
   type t<'a, 'p> = loaderArgs<'p> => promise<'a>
 }
@@ -76,3 +78,12 @@ module MakeLoader = (Data: LoaderData) => {
 
 @module("@remix-run/react")
 external redirect: string => exn = "redirect"
+
+module type ActionData = {
+  type t
+}
+
+module MakeAction = (Data: ActionData) => {
+  type actionArgs = {context: context, request: Webapi.Fetch.Request.t}
+  type t = actionArgs => promise<Js.Nullable.t<Data.t>>
+}
