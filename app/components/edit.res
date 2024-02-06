@@ -1,29 +1,8 @@
-module LoaderData = {
-  type t = result<Post.t, string>
-  type params = {id: string}
-}
-
-module Loader = Remix.MakeLoader(LoaderData)
-
-let loader: Loader.t = async ({context, params}) => {
-  open Performance
-  let secret = context.env["FAUNA_SECRET"]
-  let start = performance.now()
-  let post = await Post.query(params.id, secret)
-  let duration = performance.now() - start
-
-  Loader.json(
-    post,
-    ~jsonOptions={
-      headers: {
-        "Server-Timing": `db;dur=${duration->Int.toString}`,
-      },
-    },
-  )
-}
+let loader = Post.loader
 
 module ActionData = {
   type t
+  type context = Env.context
 }
 
 module Action = Remix.MakeAction(ActionData)
@@ -92,7 +71,7 @@ let action: Action.t = async ({context, request}) => {
 
 @react.component
 let make = () => {
-  let post = Loader.useLoaderData()
+  let post = Post.Loader.useLoaderData()
 
   // format the date into YYYY-MM-DD
   let date = React.useMemo(() => {

@@ -1,4 +1,2 @@
-// type env = { }
-
-// let env: {..} = %raw("process.env")
-
+type env = {"FAUNA_SECRET": string}
+type context = {env: env}

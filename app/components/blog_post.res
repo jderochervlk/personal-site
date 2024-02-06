@@ -10,6 +10,11 @@ let make = (~post: Post.t, ~chop) => {
     <p>
       <strong> {post.date->React.string} </strong>
     </p>
+    {!chop
+      ? <p>
+          <a href="/"> {"Return home"->React.string} </a>
+        </p>
+      : React.null}
     <Markdown
       options={{
         overrides: {
@@ -25,6 +30,11 @@ let make = (~post: Post.t, ~chop) => {
           <hr />
           <a href={`post/${post.id}`}> {"Read more"->React.string} </a>
         </>
+      : React.null}
+    {!chop
+      ? <p>
+          <a href="/"> {"Return home"->React.string} </a>
+        </p>
       : React.null}
   </article>
 }

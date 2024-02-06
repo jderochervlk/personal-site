@@ -17,9 +17,13 @@
 		"@rescript/core",
 		"@rescript/react",
 		"rescript-webapi",
-		"@glennsl/rescript-json-combinators"
+		"@glennsl/rescript-json-combinators",
+		"@jvlk/rescript-remix"
 	],
-	"bsc-flags": ["-open RescriptCore", "-open JsonCombinators"],
+	"bsc-flags": [
+		"-open RescriptCore",
+		"-open JsonCombinators"
+	],
 	"ppx-flags": [],
 	"jsx": {
 		"version": 4

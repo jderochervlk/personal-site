@@ -7,6 +7,7 @@ let headers: Remix.Headers.t<{..}> = params =>
 module Data = {
   type t = {posts: Posts.t}
   type params
+  type context = Env.context
 }
 
 module Loader = Remix.MakeLoader(Data)
