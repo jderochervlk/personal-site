@@ -30,6 +30,7 @@ let make = () => {
         <Remix.Outlet />
       </main>
       <Remix.Scripts />
+      <Remix.ScrollRestoration />
       <Remix.LiveReload />
     </body>
   </html>
