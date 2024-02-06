@@ -12,7 +12,9 @@ let make = (~post: Post.t, ~chop) => {
     </p>
     {!chop
       ? <p>
-          <Remix.Link to="/"> {"Return home"->React.string} </Remix.Link>
+          <Remix.Link prefetch=Remix.Link.Viewport to="/">
+            {"Return home"->React.string}
+          </Remix.Link>
         </p>
       : React.null}
     <Markdown
@@ -28,12 +30,16 @@ let make = (~post: Post.t, ~chop) => {
     {chop
       ? <>
           <hr />
-          <Remix.Link to={`post/${post.id}`}> {"Read more"->React.string} </Remix.Link>
+          <Remix.Link to={`post/${post.id}`} prefetch=Remix.Link.Viewport>
+            {"Read more"->React.string}
+          </Remix.Link>
         </>
       : React.null}
     {!chop
       ? <p>
-          <Remix.Link to="/"> {"Return home"->React.string} </Remix.Link>
+          <Remix.Link to="/" prefetch=Remix.Link.Viewport>
+            {"Return home"->React.string}
+          </Remix.Link>
         </p>
       : React.null}
   </article>
